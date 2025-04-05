@@ -7,8 +7,14 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                // Checkout code from GitHub with credentials
-                git credentialsId: 'GithubToken', url: 'https://github.com/victorzapiain/PasswordCheckerJUnit.git'  // Replace with your GitHub repo URL
+                checkout scm: [
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],  // Update this if you use a different branch
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/victorzapiain/PasswordCheckerJUnit.git',
+                        credentialsId: 'GithubToken'  // Make sure the credentials ID matches what you set in Jenkins
+                    ]]
+                ]
             }
         }
         stage('Build') {
@@ -61,4 +67,5 @@ pipeline {
         }
     }
 }
+
 
