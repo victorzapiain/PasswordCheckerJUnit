@@ -8,7 +8,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 // Checkout code from GitHub with credentials
-                git credentialsId: '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', url: 'https://github.com/victorzapiain/PasswordCheckerJUnit.git'  // Replace with your GitHub repo URL
+                git credentialsId: 'GithubToken', url: 'https://github.com/victorzapiain/PasswordCheckerJUnit.git'  // Replace with your GitHub repo URL
             }
         }
         stage('Build') {
