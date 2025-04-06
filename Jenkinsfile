@@ -17,6 +17,7 @@ pipeline {
                 ]
             }
         }
+
         stage('Build') {
             steps {
                 script {
@@ -26,24 +27,29 @@ pipeline {
                 }
             }
         }
+
         stage('Test') {
             steps {
                 script {
-                    docker.image('cimg/openjdk:11.0').inside {
+                    // Match Java version with build stage
+                    docker.image('cimg/openjdk:17.0').inside {
                         sh 'mvn test'
                     }
                 }
             }
         }
+
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    docker.image('cimg/openjdk:8.0').inside {
+                    // Also use Java 17 to ensure compatibility
+                    docker.image('cimg/openjdk:17.0').inside {
                         sh 'mvn sonar:sonar'
                     }
                 }
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -51,6 +57,7 @@ pipeline {
                 }
             }
         }
+
         stage('Push to Docker Hub') {
             steps {
                 script {
@@ -62,5 +69,4 @@ pipeline {
         }
     }
 }
-
 
