@@ -20,9 +20,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Build using Java 17
-                    docker.image('openjdk:17-jdk').inside {
-                        sh 'apt-get update && apt-get install -y maven'
+                    docker.image('cimg/openjdk:17.0').inside {
                         sh 'mvn clean package'
                     }
                 }
@@ -31,9 +29,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Test using Java 11
-                    docker.image('openjdk:11-jdk').inside {
-                        sh 'apt-get update && apt-get install -y maven'
+                    docker.image('cimg/openjdk:11.0').inside {
                         sh 'mvn test'
                     }
                 }
@@ -42,9 +38,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    // Analyze with Java 8
-                    docker.image('openjdk:8-jdk').inside {
-                        sh 'apt-get update && apt-get install -y maven'
+                    docker.image('cimg/openjdk:8.0').inside {
                         sh 'mvn sonar:sonar'
                     }
                 }
@@ -68,6 +62,5 @@ pipeline {
         }
     }
 }
-
 
 
