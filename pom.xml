@@ -11,6 +11,7 @@
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
+    <sonar.host.url>http://localhost:9000</sonar.host.url> <!-- Add this line -->
   </properties>
 
   <dependencies>
@@ -30,6 +31,13 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M9</version>
+      </plugin>
+
+      <!-- ✅ SonarQube Maven plugin -->
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>4.0.0.4121</version>
       </plugin>
     </plugins>
   </build>
