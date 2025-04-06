@@ -9,10 +9,10 @@ pipeline {
             steps {
                 checkout scm: [
                     $class: 'GitSCM',
-                    branches: [[name: '*/main']],  // Update this if you use a different branch
+                    branches: [[name: '*/main']],
                     userRemoteConfigs: [[
                         url: 'https://github.com/victorzapiain/PasswordCheckerJUnit.git',
-                        credentialsId: 'GithubToken'  // Make sure the credentials ID matches what you set in Jenkins
+                        credentialsId: 'GithubToken'
                     ]]
                 ]
             }
@@ -22,7 +22,8 @@ pipeline {
                 script {
                     // Build using Java 17
                     docker.image('openjdk:17-jdk').inside {
-                        sh './mvnw clean package'  // Replace with your Maven build command
+                        sh 'apt-get update && apt-get install -y maven'
+                        sh 'mvn clean package'
                     }
                 }
             }
@@ -32,7 +33,8 @@ pipeline {
                 script {
                     // Test using Java 11
                     docker.image('openjdk:11-jdk').inside {
-                        sh './mvnw test'  // Replace with your Maven test command
+                        sh 'apt-get update && apt-get install -y maven'
+                        sh 'mvn test'
                     }
                 }
             }
@@ -42,7 +44,8 @@ pipeline {
                 script {
                     // Analyze with Java 8
                     docker.image('openjdk:8-jdk').inside {
-                        sh './mvnw sonar:sonar'  // Replace with your Maven SonarQube analysis command
+                        sh 'apt-get update && apt-get install -y maven'
+                        sh 'mvn sonar:sonar'
                     }
                 }
             }
@@ -50,7 +53,6 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image for your Java app
                     docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
                 }
             }
@@ -58,7 +60,6 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    // Log in to Docker Hub and push the image
                     docker.withRegistry('', 'dockerhub-credentials') {
                         docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push()
                     }
@@ -67,5 +68,6 @@ pipeline {
         }
     }
 }
+
 
 
