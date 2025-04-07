@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                     echo "Testing SonarQube connectivity..."
-                    sh 'docker exec -it jenkins curl -v $SONARQUBE_URL || echo "SonarQube not reachable"'
+                    sh "curl -v $SONARQUBE_URL || echo 'SonarQube not reachable'"
                 }
             }
         }
