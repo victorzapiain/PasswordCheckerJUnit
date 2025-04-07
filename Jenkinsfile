@@ -58,7 +58,7 @@ pipeline {
                 }
             }
             steps {
-                withSonarQubeEnv('sonar') {
+                withSonarQubeEnv('Sonarqube Server') {  // Updated SonarQube server name here
                     script {
                         echo "Running SonarQube analysis..."
 
