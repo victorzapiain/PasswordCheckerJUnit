@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "victorzapiain/password-checker"
         DOCKER_TAG = "latest"
-        SONARQUBE_URL = "http://localhost:9000"  // SonarQube server URL for local setup
+        SONARQUBE_URL = "http://localhost:9000"  // Using localhost for SonarQube URL
     }
 
     stages {
@@ -41,6 +41,15 @@ pipeline {
             }
         }
 
+        stage('SonarQube Connectivity Check') {
+            steps {
+                script {
+                    echo "Testing SonarQube connectivity..."
+                    sh 'docker exec -it jenkins curl -v $SONARQUBE_URL || echo "SonarQube not reachable"'
+                }
+            }
+        }
+
         stage('SonarQube Analysis') {
             agent {
                 docker {
@@ -53,11 +62,7 @@ pipeline {
                     script {
                         echo "Running SonarQube analysis..."
 
-                        // Check if SonarQube is reachable from Jenkins container
-                        echo "Testing SonarQube connectivity..."
-                        sh 'curl -v $SONARQUBE_URL || echo "SonarQube not reachable"'
-
-                        // Run SonarQube analysis with more verbose logging
+                        // Run the SonarQube analysis with more verbose logging
                         withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONARQUBE_TOKEN')]) {
                             sh '''
                                 mvn clean install org.sonarsource.scanner.maven:sonar-maven-plugin:4.7.0.1746:sonar \
