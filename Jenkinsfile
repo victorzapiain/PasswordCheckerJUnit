@@ -21,7 +21,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.image('cimg/openjdk:17.0').inside {
+                    docker.image('cimg/openjdk:17.0').inside('--network ci_network') {
                         sh 'mvn clean package'
                     }
                 }
@@ -31,8 +31,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Match Java version with build stage
-                    docker.image('cimg/openjdk:17.0').inside {
+                    docker.image('cimg/openjdk:17.0').inside('--network ci_network') {
                         sh 'mvn test'
                     }
                 }
@@ -40,12 +39,15 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
+            agent {
+                docker {
+                    image 'maven:3.8.6-eclipse-temurin-17'
+                    args '--network ci_network'
+                }
+            }
             steps {
-                script {
-                    // Also use Java 17 to ensure compatibility
-                    docker.image('cimg/openjdk:17.0').inside {
-                        sh 'mvn sonar:sonar'
-                    }
+                withSonarQubeEnv('sonar') {
+                    sh 'mvn clean install org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar -Dsonar.host.url=http://sonar:9000'
                 }
             }
         }
@@ -69,4 +71,3 @@ pipeline {
         }
     }
 }
-
