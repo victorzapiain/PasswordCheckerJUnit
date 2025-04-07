@@ -49,8 +49,8 @@ pipeline {
             }
             steps {
                 withSonarQubeEnv('sonar') {
-                    // Updated to use SonarQube container's IP address
-                    sh 'mvn clean install org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar -Dsonar.host.url=http://172.18.0.2:9000 -X'
+                    // Use localhost for SonarQube server
+                    sh 'mvn clean install org.sonarsource.scanner.maven:sonar-maven-plugin:4.7.0.1746:sonar -Dsonar.host.url=http://localhost:9000 -X'
                 }
             }
         }
