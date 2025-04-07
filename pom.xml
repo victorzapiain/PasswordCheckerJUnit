@@ -11,6 +11,8 @@
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
+    <!-- SonarQube server URL -->
+    <sonar.host.url>http://localhost:9000</sonar.host.url>  <!-- Add this line -->
   </properties>
 
   <dependencies>
@@ -53,3 +55,4 @@
   </build>
 
 </project>
+
