@@ -1,9 +1,11 @@
 pipeline {
     agent any
+
     environment {
         DOCKER_IMAGE = "victorzapiain/password-checker"
         DOCKER_TAG = "latest"
     }
+
     stages {
         stage('Checkout Code') {
             steps {
