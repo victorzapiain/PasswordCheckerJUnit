@@ -66,7 +66,7 @@ pipeline {
                         // Run the SonarQube analysis with more verbose logging
                         withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONARQUBE_TOKEN')]) {
                             sh '''
-                                mvn clean install org.sonarsource.scanner.maven:sonar-maven-plugin:4.7.0.1746:sonar \
+                                mvn clean install sonar:sonar \
                                 -Dsonar.host.url=$SONARQUBE_URL \
                                 -Dsonar.login=$SONARQUBE_TOKEN \
                                 -X
