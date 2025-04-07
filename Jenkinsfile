@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "victorzapiain/password-checker"
         DOCKER_TAG = "latest"
-        SONARQUBE_URL = "http://sonarqube:9000"  // Use the Docker network name for SonarQube
+        SONARQUBE_URL = "http://host.docker.internal:9000"  // Use host.docker.internal for local SonarQube
         SONARQUBE_TOKEN = credentials('sonarqube-token')  // Ensure the token is correctly set up
     }
 
