@@ -4,8 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = "victorzapiain/password-checker"
         DOCKER_TAG = "latest"
-        SONARQUBE_URL = "http://sonarqube:9000"  // ✅ Use container name instead of localhost
-        SONARQUBE = 'SonarQube Server'  // Jenkins global SonarQube config name
+        SONARQUBE_URL = "http://sonarqube:9000"  
+        SONARQUBE = 'SonarQube Server'  
     }
 
     stages {
