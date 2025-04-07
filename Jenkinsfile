@@ -4,8 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = "victorzapiain/password-checker"
         DOCKER_TAG = "latest"
-        SONARQUBE_URL = "http://localhost:9000"  // Using localhost for SonarQube URL
-        SONARQUBE = 'SonarQube Server'  // The name of your SonarQube installation
+        SONARQUBE_URL = "http://sonarqube:9000"  // ✅ Use container name instead of localhost
+        SONARQUBE = 'SonarQube Server'  // Jenkins global SonarQube config name
     }
 
     stages {
@@ -46,6 +46,7 @@ pipeline {
             steps {
                 script {
                     echo "Testing SonarQube connectivity..."
+                    sh "ping -c 4 sonarqube || echo 'Ping failed'"
                     sh "curl -v $SONARQUBE_URL || echo 'SonarQube not reachable'"
                 }
             }
@@ -59,11 +60,9 @@ pipeline {
                 }
             }
             steps {
-                withSonarQubeEnv(SONARQUBE) {  // Use the environment variable for SonarQube
+                withSonarQubeEnv(SONARQUBE) {
                     script {
                         echo "Running SonarQube analysis..."
-
-                        // Run the SonarQube analysis with more verbose logging
                         withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONARQUBE_TOKEN')]) {
                             sh '''
                                 mvn clean install sonar:sonar \
@@ -96,5 +95,4 @@ pipeline {
         }
     }
 }
-
 
