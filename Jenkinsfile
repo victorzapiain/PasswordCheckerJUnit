@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "victorzapiain/password-checker"
         DOCKER_TAG = "latest"
-        SONARQUBE_URL = "http://localhost:9000"  // Ensure SonarQube server URL is correct
+        SONARQUBE_URL = "http://sonarqube:9000"  // Updated SonarQube server URL to use container name
     }
 
     stages {
@@ -52,6 +52,7 @@ pipeline {
                 withSonarQubeEnv('sonar') {
                     script {
                         echo "Running SonarQube analysis..."
+                        // Use the updated SonarQube URL and authentication token
                         sh 'mvn clean install org.sonarsource.scanner.maven:sonar-maven-plugin:4.7.0.1746:sonar -Dsonar.host.url=$SONARQUBE_URL -Dsonar.login=$SONARQUBE_TOKEN -X'
                     }
                 }
@@ -77,3 +78,4 @@ pipeline {
         }
     }
 }
+
