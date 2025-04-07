@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "victorzapiain/password-checker"
         DOCKER_TAG = "latest"
-        SONARQUBE_URL = "http://172.17.0.1:9000"  // Change this to your host machine's IP address
+        SONARQUBE_URL = "http://172.17.0.1:9000"  // Use host machine IP address for SonarQube URL
     }
 
     stages {
@@ -52,10 +52,10 @@ pipeline {
                 withSonarQubeEnv('sonar') {
                     script {
                         echo "Running SonarQube analysis..."
-                        // Debugging step: Check if Jenkins can reach SonarQube
+                        // Verify SonarQube accessibility with curl
                         sh 'curl -v $SONARQUBE_URL || echo "SonarQube not reachable"'
 
-                        // Run SonarQube analysis with authentication token
+                        // Run SonarQube analysis using the authentication token
                         withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONARQUBE_TOKEN')]) {
                             sh 'mvn clean install org.sonarsource.scanner.maven:sonar-maven-plugin:4.7.0.1746:sonar -Dsonar.host.url=$SONARQUBE_URL -Dsonar.login=$SONARQUBE_TOKEN -X'
                         }
@@ -83,4 +83,5 @@ pipeline {
         }
     }
 }
+
 
