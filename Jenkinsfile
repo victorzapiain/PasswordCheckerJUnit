@@ -5,6 +5,7 @@ pipeline {
         DOCKER_IMAGE = "victorzapiain/password-checker"
         DOCKER_TAG = "latest"
         SONARQUBE_URL = "http://localhost:9000"  // Using localhost for SonarQube URL
+        SONARQUBE = 'SonarQube Server'  // The name of your SonarQube installation
     }
 
     stages {
@@ -58,7 +59,7 @@ pipeline {
                 }
             }
             steps {
-                withSonarQubeEnv('Sonarqube Server') {  // Updated SonarQube server name here
+                withSonarQubeEnv(SONARQUBE) {  // Use the environment variable for SonarQube
                     script {
                         echo "Running SonarQube analysis..."
 
@@ -95,4 +96,5 @@ pipeline {
         }
     }
 }
+
 
